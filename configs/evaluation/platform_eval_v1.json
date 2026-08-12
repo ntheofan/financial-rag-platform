@@ -1,0 +1,6 @@
+{
+  "protocol_version": "platform_eval_v1",
+  "modes": ["dense", "hybrid", "hybrid_reranked"],
+  "hit_ks": [1, 3, 5, 10],
+  "include_answer_metrics": false
+}

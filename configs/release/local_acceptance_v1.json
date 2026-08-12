@@ -1,0 +1,10 @@
+{
+  "schema_version": "local_acceptance_v1",
+  "api_url": "http://127.0.0.1:8000",
+  "fixture_path": "tests/fixtures/demo/acme-2025-10k.md",
+  "fixture_label": "synthetic local acceptance corpus",
+  "query": "What were ACME's capital expenditures and operating cash flow?",
+  "request_timeout_seconds": 300,
+  "job_timeout_seconds": 1800,
+  "poll_interval_seconds": 2
+}

@@ -1,0 +1,31 @@
+* text=auto eol=lf
+
+*.py text eol=lf
+*.pyi text eol=lf
+*.toml text eol=lf
+*.yaml text eol=lf
+*.yml text eol=lf
+*.json text eol=lf
+*.jsonl text eol=lf
+*.md text eol=lf
+*.txt text eol=lf
+*.sh text eol=lf
+*.ps1 text eol=crlf
+
+# Research notebooks are immutable binary artifacts. Git must not normalize them.
+*.ipynb binary
+
+# Binary and generated data formats
+*.pdf binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.parquet binary
+*.arrow binary
+*.npy binary
+*.npz binary
+*.index binary
+*.faiss binary
+*.pkl binary
+*.pickle binary

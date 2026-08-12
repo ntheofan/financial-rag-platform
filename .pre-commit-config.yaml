@@ -1,0 +1,65 @@
+minimum_pre_commit_version: "4.0.0"
+default_install_hook_types: [pre-commit, pre-push]
+
+repos:
+  - repo: local
+    hooks:
+      - id: ruff-check
+        name: ruff check
+        entry: ruff check --force-exclude
+        language: python
+        additional_dependencies: ["ruff==0.16.1"]
+        types: [python]
+        exclude: ^(data|notebooks)/
+
+      - id: ruff-format
+        name: ruff format check
+        entry: ruff format --check --force-exclude
+        language: python
+        additional_dependencies: ["ruff==0.16.1"]
+        types: [python]
+        exclude: ^(data|notebooks)/
+
+      - id: mypy
+        name: mypy
+        entry: mypy src tests
+        language: python
+        additional_dependencies: &project_check_dependencies
+          - "aiosqlite>=0.20,<1"
+          - "alembic>=1.14,<2"
+          - "asyncpg>=0.30,<1"
+          - "faiss-cpu>=1.9,<2"
+          - "fastapi>=0.115,<1"
+          - "httpx>=0.28,<1"
+          - "langchain-core>=0.3,<2"
+          - "langchain-text-splitters>=0.3,<2"
+          - "mypy==1.20.2"
+          - "numpy>=1.26,<3"
+          - "openai>=2,<3"
+          - "pgvector>=0.3,<1"
+          - "pydantic>=2.10,<3"
+          - "pydantic-settings>=2.7,<3"
+          - "PyMuPDF>=1.25,<2"
+          - "pytest==9.1.1"
+          - "pytest-asyncio==1.4.0"
+          - "pytest-cov==7.1.0"
+          - "python-multipart>=0.0.20,<1"
+          - "sqlalchemy[asyncio]>=2.0,<3"
+          - "structlog>=24.4"
+        pass_filenames: false
+        types: [python]
+
+      - id: pytest
+        name: pytest
+        entry: pytest -q
+        language: python
+        additional_dependencies: *project_check_dependencies
+        pass_filenames: false
+        stages: [pre-push, manual]
+
+      - id: publication-boundary
+        name: public repository boundary
+        entry: python scripts/check_publication.py
+        language: python
+        pass_filenames: false
+        stages: [pre-push, manual]

@@ -1,0 +1,39 @@
+{
+  "platform_version": "platform_v1",
+  "embedding_model_identifier": "BAAI/bge-m3",
+  "embedding_dimension": 1024,
+  "normalization_method": "l2",
+  "dense_index_type": "faiss_index_flat_ip",
+  "bm25_k1": 1.5,
+  "bm25_b": 0.75,
+  "dense_candidate_count": 20,
+  "bm25_candidate_count": 10,
+  "rrf_k": 30,
+  "dense_rrf_weight": 1.0,
+  "bm25_rrf_weight": 0.2,
+  "final_top_k": 10,
+  "reranker_model_identifier": "BAAI/bge-reranker-v2-m3",
+  "query_expansion": {
+    "enabled": true,
+    "version": "finance_aliases_v1",
+    "rules": [
+      {"alias": "ppe", "expansions": ["property plant equipment", "property plant and equipment", "property plant and equipment net", "pp&e", "balance sheet"]},
+      {"alias": "net ppe", "expansions": ["property plant and equipment net", "net property plant equipment", "property plant equipment net", "balance sheet"]},
+      {"alias": "capex", "expansions": ["capital expenditure", "capital expenditures", "purchases of property plant and equipment", "purchases of property, plant and equipment", "cash flow statement"]},
+      {"alias": "cogs", "expansions": ["cost of goods sold", "cost of sales", "cost of products sold", "income statement"]},
+      {"alias": "ebitda", "expansions": ["earnings before interest taxes depreciation and amortization", "non-gaap operating performance"]},
+      {"alias": "opex", "expansions": ["operating expenses", "selling general and administrative", "sg&a"]},
+      {"alias": "gross margin", "expansions": ["gross profit margin", "gross profit", "income statement"]},
+      {"alias": "operating cash flow", "expansions": ["net cash provided by operating activities", "cash flow statement"]},
+      {"alias": "free cash flow", "expansions": ["free cash flow", "net cash provided by operating activities", "capital expenditures"]},
+      {"alias": "working capital", "expansions": ["current assets", "current liabilities", "balance sheet"]},
+      {"alias": "payout ratio", "expansions": ["dividends", "net income", "dividend payout ratio"]},
+      {"alias": "retention ratio", "expansions": ["retained earnings ratio", "dividend payout ratio", "dividends", "net income"]},
+      {"alias": "balance sheet", "expansions": ["balance sheet", "assets liabilities equity"]},
+      {"alias": "cash flow", "expansions": ["cash flow statement", "operating activities investing activities financing activities"]},
+      {"alias": "income statement", "expansions": ["income statement", "net sales operating income net income"]},
+      {"alias": "year end", "expansions": ["at december 31", "balance sheet"]},
+      {"alias": "year-end", "expansions": ["at december 31", "balance sheet"]}
+    ]
+  }
+}

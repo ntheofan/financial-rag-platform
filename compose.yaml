@@ -1,0 +1,115 @@
+name: financial-rag-platform
+
+services:
+  database:
+    image: pgvector/pgvector:0.8.2-pg17-bookworm
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-financial_rag}
+      POSTGRES_USER: ${POSTGRES_USER:-financial_rag}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-financial_rag_local_only}
+    ports:
+      - "127.0.0.1:${POSTGRES_PORT:-5432}:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+      start_period: 5s
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  migrate:
+    build:
+      context: .
+      target: api
+    environment:
+      DATABASE_URL: postgresql+asyncpg://${POSTGRES_USER:-financial_rag}:${POSTGRES_PASSWORD:-financial_rag_local_only}@database:5432/${POSTGRES_DB:-financial_rag}
+    command: ["python", "-m", "alembic", "upgrade", "head"]
+    depends_on:
+      database:
+        condition: service_healthy
+    restart: "no"
+
+  api:
+    build:
+      context: .
+      target: api-models
+    init: true
+    read_only: true
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      PROJECT_ROOT: /app
+      RUNTIME_CONFIG_PATH: configs/runtime/local_v1.json
+      RETRIEVAL_ARTIFACT_DIRECTORY: ${CONTAINER_RETRIEVAL_ARTIFACT_DIRECTORY:-}
+      UPLOAD_STAGING_DIRECTORY: /runtime/uploads
+      DATABASE_ENABLED: "true"
+      DATABASE_SMOKE_ON_STARTUP: "true"
+      DATABASE_URL: postgresql+asyncpg://${POSTGRES_USER:-financial_rag}:${POSTGRES_PASSWORD:-financial_rag_local_only}@database:5432/${POSTGRES_DB:-financial_rag}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      OPENAI_MODEL: ${OPENAI_MODEL:-gpt-4o-mini}
+      API_DOCS_ENABLED: ${API_DOCS_ENABLED:-true}
+      HF_HOME: /var/cache/financial-rag/huggingface
+      HF_HUB_DISABLE_TELEMETRY: "1"
+    ports:
+      - "127.0.0.1:${API_PORT:-8000}:8000"
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health/live', timeout=3)"
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 20s
+    volumes:
+      - ./artifacts:/runtime/artifacts:ro
+      - model-cache:/var/cache/financial-rag
+    tmpfs:
+      - /tmp
+      - /runtime/uploads
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    restart: unless-stopped
+
+  demo:
+    build:
+      context: .
+      target: demo
+    init: true
+    read_only: true
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      FINANCIAL_RAG_API_URL: http://api:8000
+      DEMO_REQUEST_TIMEOUT_SECONDS: ${DEMO_REQUEST_TIMEOUT_SECONDS:-90}
+      HOME: /tmp
+    ports:
+      - "127.0.0.1:${DEMO_PORT:-8501}:8501"
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8501/_stcore/health', timeout=3)"
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 20s
+    tmpfs:
+      - /tmp
+    depends_on:
+      api:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  postgres-data:
+  model-cache:

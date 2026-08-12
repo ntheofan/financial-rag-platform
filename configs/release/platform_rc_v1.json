@@ -1,0 +1,47 @@
+{
+  "schema_version": "platform_rc_v1",
+  "project_status": "in_development",
+  "package_version": "0.1.0",
+  "python_minimum": "3.12",
+  "protocols": {
+    "retrieval": "platform_v1",
+    "evaluation": "platform_eval_v1",
+    "runtime": "local_v1"
+  },
+  "alembic_head": "20260812_0002",
+  "notebook_count": 15,
+  "api_paths": [
+    "/api/v1/corpora",
+    "/api/v1/corpora/{corpus_revision_id}",
+    "/api/v1/corpus-jobs",
+    "/api/v1/corpus-jobs/{job_id}",
+    "/api/v1/evaluations/retrieval",
+    "/api/v1/indexes",
+    "/api/v1/indexes/{index_revision_id}",
+    "/api/v1/indexes/{index_revision_id}/activate",
+    "/api/v1/query",
+    "/api/v1/retrieval/query",
+    "/health/live",
+    "/health/ready"
+  ],
+  "required_source_checks": [
+    "publication",
+    "ruff_lint",
+    "ruff_format",
+    "mypy",
+    "pytest_coverage",
+    "alembic_head",
+    "openapi_contract",
+    "synthetic_end_to_end",
+    "import_isolation",
+    "release_repository"
+  ],
+  "required_infrastructure_checks": [
+    "postgres_pgvector_migrations",
+    "model_enabled_index_build",
+    "compose_runtime",
+    "real_local_acceptance",
+    "dependency_audit",
+    "github_actions"
+  ]
+}

@@ -1,0 +1,88 @@
+# Secrets and local configuration
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Python environments and caches
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+*.pyd
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.hypothesis/
+.coverage
+.coverage.*
+coverage.xml
+htmlcov/
+*.egg-info/
+.eggs/
+build/
+dist/
+
+# IDE and operating-system files
+.idea/
+.vscode/
+*.code-workspace
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Local logs and runtime state
+*.log
+logs/
+uploads/
+artifacts/
+outputs/
+pgdata/
+.postgres/
+*.db
+*.sqlite
+*.sqlite3
+
+# Model and package caches
+.cache/
+model-cache/
+models/
+huggingface/
+.huggingface/
+
+# Binary, vector, and derived dataset artifacts
+*.7z
+*.gz
+*.rar
+*.tar
+*.tgz
+*.zip
+*.faiss
+*.index
+*.npy
+*.npz
+*.pkl
+*.pickle
+*.parquet
+*.arrow
+*.pdf
+*.retrieval.json*
+!tests/fixtures/**/*.pdf
+
+# Keep the local research data tree, but publish none of its contents.
+/data/raw/*
+!/data/raw/.gitkeep
+/data/interim/*
+!/data/interim/.gitkeep
+/data/processed/*
+!/data/processed/.gitkeep
+
+# Local benchmark and evaluation runs outside data/
+/benchmarks/local/
+/evaluation-runs/
+
+# Immutable thesis artifacts require a separate manual publication clearance.
+/notebooks/*.ipynb
+/notebooks/figures/

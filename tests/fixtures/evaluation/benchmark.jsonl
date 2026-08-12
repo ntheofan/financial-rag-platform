@@ -1,0 +1,2 @@
+{"query_id":"synthetic-q1","query":"What were synthetic capital expenditures?","relevant_chunk_ids":["synthetic_chunk_capex"],"expected_answer":"Synthetic capital expenditures were 10 units."}
+{"query_id":"synthetic-q2","query":"What was synthetic revenue?","relevant_chunk_ids":["synthetic_chunk_revenue"],"expected_answer":"Synthetic revenue was 20 units."}

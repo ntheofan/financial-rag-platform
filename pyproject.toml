@@ -1,0 +1,124 @@
+[build-system]
+requires = ["setuptools>=75"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "financial-rag-platform"
+version = "0.1.0"
+description = "In-development foundation for a local financial document intelligence demo."
+readme = "README.md"
+requires-python = ">=3.12"
+license = { file = "LICENSE" }
+classifiers = [
+  "Development Status :: 2 - Pre-Alpha",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.12",
+  "Typing :: Typed",
+]
+dependencies = [
+  "alembic>=1.14,<2",
+  "asyncpg>=0.30,<1",
+  "faiss-cpu>=1.9,<2",
+  "fastapi>=0.115,<1",
+  "langchain-core>=0.3,<2",
+  "langchain-text-splitters>=0.3,<2",
+  "numpy>=1.26,<3",
+  "openai>=2,<3",
+  "pydantic>=2.10,<3",
+  "pydantic-settings>=2.7,<3",
+  "pgvector>=0.3,<1",
+  "python-multipart>=0.0.20,<1",
+  "PyMuPDF>=1.25,<2",
+  "sqlalchemy[asyncio]>=2.0,<3",
+  "structlog>=24.4",
+]
+
+[project.optional-dependencies]
+models = [
+  "FlagEmbedding>=1.4,<2",
+  # Avoid eager sentence-transformers 3+/5 imports breaking side-effect-free
+  # FastAPI startup when the optional model stack is installed.
+  "sentence-transformers>=2.7,<3",
+  # The model-enabled Docker target installs this exact release from the
+  # official PyTorch CPU wheel index before resolving the remaining extra.
+  "torch==2.9.1",
+]
+api = [
+  "uvicorn[standard]>=0.34,<1",
+]
+evaluation = []
+demo = [
+  "httpx>=0.28,<1",
+  "streamlit>=1.42,<2",
+]
+security = [
+  "pip-audit>=2.9,<3",
+]
+test = [
+  "aiosqlite>=0.20,<1",
+  "httpx>=0.28,<1",
+  "pytest>=8.3,<10",
+  "pytest-asyncio>=0.25,<2",
+  "pytest-cov>=6,<8",
+]
+dev = [
+  "aiosqlite>=0.20,<1",
+  "httpx>=0.28,<1",
+  "mypy>=1.14,<2",
+  "pre-commit>=4,<5",
+  "pytest>=8.3,<10",
+  "pytest-asyncio>=0.25,<2",
+  "pytest-cov>=6,<8",
+  "ruff>=0.9,<1",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+financial_rag = ["py.typed"]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+extend-exclude = [
+  "data",
+  "notebooks",
+]
+
+[tool.ruff.lint]
+select = ["B", "E", "F", "I", "RUF", "SIM", "UP"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["financial_rag"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+files = ["src", "tests"]
+exclude = ["^data/", "^notebooks/"]
+show_error_codes = true
+pretty = true
+
+[tool.pytest.ini_options]
+minversion = "8.3"
+testpaths = ["tests"]
+pythonpath = ["src"]
+addopts = [
+  "--basetemp=.cache/pytest-tmp",
+  "--strict-config",
+  "--strict-markers",
+]
+asyncio_mode = "auto"
+markers = [
+  "integration: tests that require local infrastructure",
+]
+
+[tool.coverage.run]
+branch = true
+source = ["financial_rag"]
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = true

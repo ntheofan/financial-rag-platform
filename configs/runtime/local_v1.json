@@ -1,0 +1,17 @@
+{
+  "runtime_version": "local_v1",
+  "retrieval_config_path": "configs/retrieval/platform_v1.json",
+  "chunking": {
+    "chunk_size": 1500,
+    "chunk_overlap": 200,
+    "min_chunk_chars": 200,
+    "separators": ["\n# ", "\n## ", "\n### ", "\n\n", "\n", ". ", " ", ""]
+  },
+  "embedding_device": "cpu",
+  "embedding_batch_size": 1,
+  "reranker_enabled": true,
+  "generation_context": {
+    "top_k": 5,
+    "token_budget": 6000
+  }
+}
