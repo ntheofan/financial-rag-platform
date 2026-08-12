@@ -44,7 +44,10 @@ The Streamlit demo exposes five focused views:
 
 A cleared synthetic filing is included at
 [`tests/fixtures/demo/acme-2025-10k.md`](tests/fixtures/demo/acme-2025-10k.md),
-so the full demo does not require publishing a real financial filing.
+with a matching synthetic retrieval benchmark at
+[`tests/fixtures/demo/acme-benchmark.json`](tests/fixtures/demo/acme-benchmark.json),
+so the full demo does not require publishing a real financial filing or
+benchmark row.
 
 ## Architecture
 
@@ -126,11 +129,11 @@ database URL is explicitly supplied.
 
 ## Verified baseline
 
-The public baseline was checked with:
+The public `v0.1.0` release candidate was checked with:
 
-- 233 passing tests, 1 opt-in PostgreSQL test skipped, and 87% combined branch
+- 237 passing tests, 1 opt-in PostgreSQL test skipped, and 87% combined branch
   coverage;
-- Ruff formatting/linting and strict mypy across 145 source files;
+- Ruff formatting/linting and strict mypy across 146 source files;
 - a clean PostgreSQL/pgvector migration and integration smoke test;
 - a clean Docker Compose acceptance run covering ingestion through all three
   retrieval modes, grounded generation with a citation, and paired evaluation;
@@ -173,7 +176,10 @@ separately from the MIT-licensed project code. See
 - [Evaluation protocol](docs/evaluation.md)
 - [Publication policy](docs/publication-policy.md)
 - [Notebook migration audit](docs/notebook-migration-audit.md)
-- [Phase 12 verification report](docs/phase-12-report.md)
+- [v0.1.0 release notes](docs/release-notes-v0.1.0.md)
+- [Phase 14 release-candidate report](docs/phase-14-report.md)
+- [Phase 13 hosted CI report](docs/phase-13-report.md)
+- [Changelog](CHANGELOG.md)
 
 ## License
 

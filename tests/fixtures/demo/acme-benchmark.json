@@ -1,0 +1,22 @@
+{
+  "schema_version": "platform_eval_dataset_v1",
+  "dataset_id": "synthetic-acme-recruiter-v1",
+  "items": [
+    {
+      "query_id": "synthetic-acme-cash-flow",
+      "query": "What were ACME's capital expenditures and operating cash flow?",
+      "relevant_chunk_ids": [
+        "chunk_146892123933fd308760e5f304418e9c"
+      ],
+      "expected_answer": "ACME's synthetic capital expenditures were 12 units and synthetic operating cash flow was 40 units in 2025."
+    },
+    {
+      "query_id": "synthetic-acme-revenue",
+      "query": "How did ACME's synthetic revenue change in 2025?",
+      "relevant_chunk_ids": [
+        "chunk_146892123933fd308760e5f304418e9c"
+      ],
+      "expected_answer": "ACME's synthetic revenue increased by 20 units in 2025."
+    }
+  ]
+}

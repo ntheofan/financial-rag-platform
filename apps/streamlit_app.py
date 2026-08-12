@@ -9,6 +9,7 @@ from financial_rag.demo import (
     FinancialRagApiClient,
     ModeComparison,
     available_scores,
+    refresh_submitted_job,
     source_label,
     top_chunk_overlap,
 )
@@ -300,16 +301,20 @@ def _documents_tab(client: FinancialRagApiClient) -> None:
         except (DemoApiError, ValueError) as exc:
             st.error(str(exc))
 
+    if st.button("Refresh jobs and revisions", use_container_width=True):
+        try:
+            jobs = client.list_corpus_jobs()
+            st.session_state["corpus_jobs"] = jobs
+            st.session_state["index_revisions"] = client.list_index_revisions()
+            submitted = st.session_state.get("submitted_corpus_job")
+            if isinstance(submitted, CorpusBuildJob):
+                st.session_state["submitted_corpus_job"] = refresh_submitted_job(submitted, jobs)
+        except DemoApiError as exc:
+            st.error(str(exc))
+
     submitted = st.session_state.get("submitted_corpus_job")
     if isinstance(submitted, CorpusBuildJob):
         st.caption(f"Submitted job: {submitted.job_id} · status: {submitted.status.value}")
-
-    if st.button("Refresh jobs and revisions", use_container_width=True):
-        try:
-            st.session_state["corpus_jobs"] = client.list_corpus_jobs()
-            st.session_state["index_revisions"] = client.list_index_revisions()
-        except DemoApiError as exc:
-            st.error(str(exc))
 
     jobs = st.session_state.get("corpus_jobs", ())
     if jobs:

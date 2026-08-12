@@ -10,6 +10,7 @@ from financial_rag.demo.client import (
 from financial_rag.demo.presentation import (
     ScoreDisplay,
     available_scores,
+    refresh_submitted_job,
     source_label,
     top_chunk_overlap,
 )
@@ -24,6 +25,7 @@ __all__ = [
     "ModeComparisonItem",
     "ScoreDisplay",
     "available_scores",
+    "refresh_submitted_job",
     "source_label",
     "top_chunk_overlap",
 ]

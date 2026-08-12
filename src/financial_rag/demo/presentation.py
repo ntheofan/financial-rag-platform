@@ -1,7 +1,10 @@
 """Pure presentation helpers shared by Streamlit rendering and unit tests."""
 
+from collections.abc import Sequence
+
 from pydantic import BaseModel, ConfigDict
 
+from financial_rag.domain.indexing import CorpusBuildJob
 from financial_rag.domain.retrieval import RetrievedChunk
 
 
@@ -44,3 +47,13 @@ def top_chunk_overlap(left: tuple[RetrievedChunk, ...], right: tuple[RetrievedCh
     if not left_ids and not right_ids:
         return 1.0
     return len(left_ids & right_ids) / len(left_ids | right_ids)
+
+
+def refresh_submitted_job(
+    submitted: CorpusBuildJob | None,
+    jobs: Sequence[CorpusBuildJob],
+) -> CorpusBuildJob | None:
+    """Replace a submitted-job snapshot with its latest matching list entry."""
+    if submitted is None:
+        return None
+    return next((job for job in jobs if job.job_id == submitted.job_id), submitted)

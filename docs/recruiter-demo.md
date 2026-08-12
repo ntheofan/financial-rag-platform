@@ -18,16 +18,17 @@ financial-document intelligence platform.
 ## Walkthrough
 
 1. **Documents:** upload `tests/fixtures/demo/acme-2025-10k.md`, wait for the
-   completed privacy-minimized job, and activate its index revision.
+   completed privacy-minimized job, refresh until its visible status is
+   `completed`, and activate its index revision.
 2. **Ask:** ask “What were ACME's capital expenditures and operating cash
    flow?” Show the grounded answer, citations, source filename, section, and
    retrieval score trace.
 3. **Compare retrieval:** run the identical query across Dense, Hybrid, and
    Hybrid + Reranker. Explain that the comparison preserves `platform_v1`
    parameters and exposes component scores.
-4. **Evaluate:** use a small synthetic benchmark created for the same fixture.
-   Explain Hit@K/MRR and the paired mode comparison without claiming a
-   FinanceBench result.
+4. **Evaluate:** upload `tests/fixtures/demo/acme-benchmark.json`. Leave answer
+   metrics disabled for the fast retrieval-only walkthrough. Explain Hit@K/MRR
+   and the paired mode comparison without claiming a FinanceBench result.
 5. **Current scope:** close with the explicit local-demo limitations and future
    work.
 
@@ -43,3 +44,7 @@ financial-document intelligence platform.
 
 Do not claim production deployment, benchmark superiority, complete PDF/table
 fidelity, financial correctness, multi-user security, or operational scale.
+
+The benchmark's relevance IDs are contract-tested against chunks rebuilt from
+the checked synthetic Markdown fixture. They are not FinanceBench identifiers
+or results.
