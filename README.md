@@ -1,260 +1,182 @@
-# financial-rag-platform
+# Financial RAG Platform
 
-> **Status: in development.** The repository currently contains the Phase 0
-> project foundation, a local Phase 1 ingestion/chunking library, a Phase 2
-> offline retrieval layer, a Phase 3 PostgreSQL/pgvector persistence layer, a
-> Phase 4 FastAPI adapter, Phase 5 local composition plus citation-validated
-> grounded generation, a Phase 6 Streamlit client, and the Phase 7A/7B paired
-> evaluation core/API/UI, Phase 8 local container/CI release gates, and a Phase 9
-> bounded local document/corpus lifecycle. It also
-> preserves the immutable thesis notebooks. It does not contain a populated
-> database, a real corpus index, generated-answer artifacts, or published
-> benchmark results.
+[![CI](https://github.com/ntheofan/financial-rag-platform/actions/workflows/ci.yml/badge.svg)](https://github.com/ntheofan/financial-rag-platform/actions/workflows/ci.yml)
+[![Python 3.12+](https://img.shields.io/badge/python-3.12%2B-3776AB.svg)](https://www.python.org/)
+[![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
-Phase 10 adds a release-candidate **validation contract**, not a production or
-public-release claim. The complete local workflow is exercised offline with
-synthetic input and deterministic fake providers. PostgreSQL/pgvector,
-model-enabled, Compose, dependency-audit, and hosted CI evidence remain separate
-gates and must not be inferred from that synthetic test.
+A local financial-document intelligence platform for asking grounded questions,
+inspecting evidence, comparing retrieval strategies, and running reproducible
+retrieval evaluations.
 
-Phase 11 adds a loopback-only real-service acceptance runner, a cleared
-synthetic filing, notebook hash/reference and exact-commit repository gates,
-plus recruiter-demo and draft-release documentation. The local synthetic
-Docker/PostgreSQL/BGE/OpenAI acceptance has passed, but this remains an
-in-development project until its exact-commit CI and publication gates pass.
+> **Status: in development.** This is a tested, single-user portfolio demo—not
+> a deployed production service or a published FinanceBench benchmark.
 
-Phase 12 hardens the CPU-only container path, dependency-layer caching, archive
-publication boundary, test isolation from a developer `.env`, and first public
-Git baseline. It does not add benchmark, deployment, scaling, or production
-claims.
+## What it demonstrates
 
-`financial-rag-platform` is being developed as a local, single-user financial
-document intelligence demo. The intended product will let a user ingest
-financial documents, ask grounded questions with citations, inspect retrieved
-chunks and their scores, compare retrieval modes, and run FinanceBench-like
-evaluations.
+- Local PDF, Markdown, and text ingestion with metadata lineage.
+- Markdown-aware chunking using the thesis defaults: 1,500 characters and 200
+  characters overlap.
+- Dense retrieval with BAAI/bge-m3 and FAISS `IndexFlatIP`.
+- Hybrid retrieval with BM25 and weighted Reciprocal Rank Fusion.
+- Optional reranking with BAAI/bge-reranker-v2-m3.
+- Grounded OpenAI generation with validated citations and abstention behavior.
+- PostgreSQL/pgvector persistence with immutable corpus and index revisions.
+- A FastAPI backend and a Streamlit interface that communicates only through
+  the API.
+- Paired Hit@K and MRR evaluation across all three retrieval modes.
 
-The project originates from thesis research on retrieval-augmented generation
-for financial filings. The research compared dense retrieval, hybrid dense +
-BM25 retrieval with Reciprocal Rank Fusion, and hybrid retrieval followed by a
-cross-encoder reranker.
+The application keeps its business logic in explicit, typed services. LangChain
+is used for document and text-splitting primitives rather than opaque chains.
 
-## Current scope
+## Demo workflow
 
-The approved Phase 0 through Phase 12 scope provides:
+The Streamlit demo exposes five focused views:
 
-- a Python 3.12+ `src` package layout,
-- repository publication and data-license policies,
-- dependency groups and quality-tool configuration,
-- validated document/chunk metadata and deterministic identifiers,
-- local UTF-8 Markdown/text loading and local PDF text extraction with PyMuPDF,
-- conservative normalization and Markdown-aware recursive chunking,
-- deterministic folder ingestion and offline synthetic unit tests,
-- FAISS `IndexFlatIP` dense search over validated L2-normalized vectors,
-- thesis-compatible BM25, weighted Reciprocal Rank Fusion, and reranking routes,
-- deterministic fake providers plus lazy optional BGE-M3 model adapters,
-- local ignored artifact save/load with strict compatibility manifests,
-- versioned `platform_v1` retrieval and query-expansion configuration,
-- SQLAlchemy 2 async PostgreSQL mappings and explicit engine/session factories,
-- pgvector persistence for 1,024-dimensional `platform_v1` embeddings,
-- immutable, deterministic corpus and embedding-index revisions,
-- transactional revision save/load with mapping and vector compatibility gates,
-- an initial reversible Alembic migration and opt-in infrastructure test,
-- a typed FastAPI application factory with explicit dependency injection,
-- liveness/readiness, a versioned V1 API for all three retrieval modes, and
-  read-only revision-metadata endpoints,
-- a versioned OpenAPI contract, request IDs, structured request logging, and
-  consistent non-sensitive error responses,
-- a versioned `local_v1` composition root with ASGI lifespan ownership,
-- explicit local retrieval-artifact loading and optional PostgreSQL/pgvector/
-  Alembic startup verification,
-- deterministic top-five context assembly with full metadata lineage,
-- an official OpenAI Responses API adapter with Pydantic structured output,
-- grounded-answer, abstention, usage, and validated citation contracts,
-- a V1 grounded-query endpoint that retains the complete retrieval score trace,
-- a recruiter-facing Streamlit client that communicates only through FastAPI,
-- grounded-answer/citation panels and side-by-side three-mode retrieval comparison,
-- a strict `platform_eval_dataset_v1` JSON/JSONL importer with synthetic fixtures,
-- paired Dense/Hybrid/Hybrid+Reranker Hit@K and MRR evaluation,
-- opt-in deterministic exact-match/token-F1 answer metrics with explicit statuses,
-- privacy-minimized run manifests/reports, CLI, FastAPI endpoint, and Streamlit view,
-- a basic GitHub Actions quality workflow,
-- non-root multi-target API/model/demo container packaging,
-- local pgvector/Alembic/FastAPI/Streamlit Compose orchestration,
-- independent CI quality, pgvector integration, dependency-audit, publication,
-  Compose-validation, lightweight image, and CPU model-enabled image gates,
-- a conservative public-boundary scanner and weekly dependency update config,
-- bounded PDF/Markdown/text upload and server-owned local staging,
-- durable privacy-minimized corpus-build job states in PostgreSQL,
-- end-to-end ingestion, chunking, embedding, revision persistence, and activation,
-- corpus/index revision listing and process-local index selection through API/UI,
-- a checked-in `platform_rc_v1` source contract and safe local preflight,
-- an offline synthetic HTTP test covering upload through grounded query/evaluation,
-- a loopback-only `local_acceptance_v1` runner for the real composed services,
-- a public synthetic annual-filing fixture and privacy-minimized acceptance result,
-- exact-commit/publication/notebook-hash release preparation gates,
-- the original, unchanged notebooks retained locally under `notebooks/` and
-  excluded from publication pending their separate manual review.
+1. **Documents** — upload a local document, build a corpus/index revision, and
+   activate it.
+2. **Ask** — submit a question and inspect the grounded answer, citations,
+   source metadata, and retrieval score trace.
+3. **Compare retrieval** — run the same query through Dense, Hybrid, and Hybrid
+   + Reranker.
+4. **Evaluate** — run a small compatible JSON/JSONL benchmark and compare Hit@K
+   and MRR by mode.
+5. **Current scope** — review the implemented boundaries and limitations.
 
-The chunking defaults preserve the thesis parameters: 1,500 characters, 200
-characters overlap, a 200-character minimum, and the documented Markdown-aware
-separator order. PDF extraction is text-only and makes no OCR claim.
+A cleared synthetic filing is included at
+[`tests/fixtures/demo/acme-2025-10k.md`](tests/fixtures/demo/acme-2025-10k.md),
+so the full demo does not require publishing a real financial filing.
 
-The historical thesis protocol is named `research_legacy_v1`. Its existing
-results have known reproducibility limitations and are not presented as
-production benchmarks. A corrected retrieval protocol named `platform_v1` is
-now implemented for offline controlled comparisons. The evaluation subsystem is
-also implemented, but no new FinanceBench run or result is bundled or claimed.
-Claim-level grounding and optional RAGAS/RAGChecker adapters remain later work.
+## Architecture
 
-## Planned architecture
-
-The architecture includes Python 3.12+, explicit application services,
-LangChain adapters without opaque chains, the official OpenAI integration,
-Pydantic v2, PostgreSQL with pgvector, SQLAlchemy 2.0, Alembic,
-Streamlit, pytest, structured logging, Docker Compose, and GitHub Actions.
-Public deployment and multi-user operational controls remain roadmap items.
-
-## Repository layout
-
-```text
-apps/                    Local Streamlit entry point
-configs/                 Versioned, non-secret retrieval/runtime configuration
-data/                    Local research data; contents are ignored
-docs/                    Audit, policies, and phase reports
-notebooks/               Immutable thesis research artifacts
-scripts/                 Reserved for explicit maintenance/developer commands
-src/financial_rag/       Typed domain, service, storage, and API packages
-tests/                   Offline synthetic unit, API, and opt-in integration tests
+```mermaid
+flowchart LR
+    U["Local user"] --> UI["Streamlit demo"]
+    UI -->|"HTTP /api/v1"| API["FastAPI"]
+    API --> SVC["Ingestion, retrieval, generation, evaluation"]
+    SVC --> DB["PostgreSQL + pgvector"]
+    SVC --> MODELS["BGE embedding + reranking"]
+    SVC -->|"Optional generation"| LLM["OpenAI API"]
+    MIG["Alembic migration job"] --> DB
 ```
 
-## Local containers
+Streamlit is a typed HTTP client and receives no provider or database secrets.
+FastAPI owns validation and service composition; PostgreSQL/pgvector owns
+revision persistence. See [the architecture notes](docs/architecture.md) for
+the complete trust and data boundaries.
 
-With Docker Engine/Desktop and Compose v2:
+## Retrieval modes
+
+| Mode | Pipeline |
+| --- | --- |
+| `dense` | BGE-M3 query embedding → normalized inner-product search |
+| `hybrid` | Dense + BM25 → weighted Reciprocal Rank Fusion |
+| `hybrid_reranked` | Hybrid candidates → BGE cross-encoder reranking |
+
+The corrected comparison protocol is versioned as `platform_v1`. Historical
+thesis results remain identified separately as `research_legacy_v1`; they are
+not presented as new benchmark results.
+
+## Quick start with Docker
+
+Prerequisites: Docker Engine/Desktop with Compose v2. The model-enabled API
+image is CPU-only. Its first run may download BGE model weights into an ignored
+Docker volume.
 
 ```powershell
 Copy-Item .env.example .env
-docker compose up --build
+docker compose up --build --wait
 ```
 
-The stack binds PostgreSQL, FastAPI, and Streamlit to loopback. Without an
-explicit compatible ignored retrieval artifact, it provides infrastructure,
-liveness, and OpenAPI behavior but retrieval/generation remain unavailable.
-See [docs/container-runtime.md](docs/container-runtime.md) for artifact setup,
-migrations, limitations, and cleanup.
+Then open:
 
-## Foundation setup
+- Streamlit: <http://127.0.0.1:8501>
+- FastAPI documentation: <http://127.0.0.1:8000/docs>
 
-On Windows PowerShell with Python 3.12 installed:
+`OPENAI_API_KEY` is optional and belongs only in the ignored `.env`. Without a
+key, document ingestion, retrieval comparison, and retrieval evaluation remain
+usable; grounded answer generation reports unavailable instead of making a
+request.
+
+To stop the stack while retaining the local database and model cache:
+
+```powershell
+docker compose down
+```
+
+Detailed startup, migration, port override, and cleanup guidance is in
+[docs/container-runtime.md](docs/container-runtime.md).
+
+## Local development
+
+On Windows PowerShell with Python 3.12:
 
 ```powershell
 py -3.12 -m venv .venv
 .\.venv\Scripts\python.exe -m pip install --upgrade pip
-.\.venv\Scripts\python.exe -m pip install -e ".[dev]"
+.\.venv\Scripts\python.exe -m pip install -e ".[demo,dev,security]"
 .\.venv\Scripts\ruff.exe check .
 .\.venv\Scripts\ruff.exe format --check .
 .\.venv\Scripts\mypy.exe src tests
-.\.venv\Scripts\pytest.exe -q
+.\.venv\Scripts\pytest.exe --cov=financial_rag --cov-report=term-missing -q
 ```
 
-Install the optional local ASGI server and model adapters, configure an ignored
-`.env`, and start the local composition factory with:
+Automated tests use synthetic fixtures and fake providers. They do not make
+live OpenAI or model-network calls. PostgreSQL integration is opt-in when a test
+database URL is explicitly supplied.
 
-```powershell
-py -3.12 -m pip install -e ".[api,models,dev]"
-.\.venv\Scripts\uvicorn.exe financial_rag.runtime.app:create_local_app --factory --host 127.0.0.1 --port 8000
-```
+## Verified baseline
 
-With no local artifact path, this factory supports liveness and OpenAPI but
-returns `503` for retrieval/generation. It never discovers an index or connects
-to PostgreSQL implicitly. Generation additionally requires `OPENAI_API_KEY`.
-See [docs/local-runtime.md](docs/local-runtime.md).
+The public baseline was checked with:
 
-The `api` extra installs Uvicorn and `demo` installs Streamlit/HTTPX. The
-evaluation core has no extra runtime dependency; the empty `evaluation` extra
-is retained as a stable install target for future optional evaluators. The
-optional `models` extra installs FlagEmbedding for explicit local/cloud BGE-M3
-execution; it is not installed by `.[dev]` and automated tests use deterministic
-fake providers. The Docker `api-models` target is the verified CPU-only
-recruiter-demo path and installs pinned Torch from the official PyTorch CPU
-wheel index.
+- 233 passing tests, 1 opt-in PostgreSQL test skipped, and 87% combined branch
+  coverage;
+- Ruff formatting/linting and strict mypy across 145 source files;
+- a clean PostgreSQL/pgvector migration and integration smoke test;
+- a clean Docker Compose acceptance run covering ingestion through all three
+  retrieval modes, grounded generation with a citation, and paired evaluation;
+- a publication scanner, exact-commit repository gate, and immutable notebook
+  hash check;
+- a strict dependency audit reporting no known vulnerabilities at the time of
+  the check.
 
-## Environment variables
+These results are engineering evidence for the checked synthetic workflow—not
+claims of financial correctness, benchmark superiority, production readiness,
+or permanent security.
 
-Copy `.env.example` to the ignored `.env` for local runtime configuration.
-Never commit `.env`, database credentials, or connection strings. No automated
-test is allowed to call the live OpenAI API. The key is optional: without it,
-retrieval remains usable but grounded generation returns HTTP 503. See
-[docs/storage-design.md](docs/storage-design.md) for migration commands and
-[docs/grounded-generation.md](docs/grounded-generation.md) for generation limits.
-`API_DOCS_ENABLED` controls only the local OpenAPI and Swagger UI routes.
-`FINANCIAL_RAG_API_URL` configures only the Streamlit-to-FastAPI connection; the
-UI never receives `OPENAI_API_KEY`.
+## Data and publication policy
 
-Phase 9 upload/indexing additionally requires PostgreSQL at Alembic head
-`20260812_0002` and the optional `models` extra. Upload staging defaults to the
-ignored `uploads/` directory and is removed after each completed/failed job.
+The public repository intentionally excludes source PDFs, FinanceBench data,
+parsed or cleaned full text, chunks, embeddings, indexes, generated contexts,
+local databases, model caches, `.env`, and the 15 thesis notebooks.
 
-## Data and notebooks
-
-Source PDFs, extracted/cleaned text, embeddings, FAISS indexes, generated
-contexts, local databases, model caches, and local evaluation runs must remain
-outside the public commit set. See [DATA_LICENSE.md](DATA_LICENSE.md) and
+The notebooks are retained byte-for-byte in the local research workspace and
+protected by a hash gate. FinanceBench and third-party documents are governed
+separately from the MIT-licensed project code. See
+[DATA_LICENSE.md](DATA_LICENSE.md) and
 [docs/publication-policy.md](docs/publication-policy.md).
 
-The 15 thesis notebooks are preserved byte-for-byte and are not runtime
-dependencies. Their code and saved outputs represent `research_legacy_v1` and
-may contain historical paths or third-party excerpts. See
-[notebooks/README.md](notebooks/README.md) before publishing them.
+## Current limitations
 
-## Project documentation
+- Local, single-user workflow only; no authentication or tenant isolation.
+- In-process document jobs are not resumable or suitable for public uploads.
+- PDF extraction is text-only: there is no OCR or complete table-fidelity claim.
+- No public deployment, managed storage, distributed workers, monitoring/SLOs,
+  or scaling claim.
+- No FinanceBench artifacts or newly published benchmark scores are bundled.
 
-- [Notebook migration audit](docs/notebook-migration-audit.md)
-- [Publication policy](docs/publication-policy.md)
-- [Phase 0 report](docs/phase-0-report.md)
-- [Phase 1 data pipeline](docs/data-pipeline.md)
-- [Phase 1 report](docs/phase-1-report.md)
-- [Retrieval design](docs/retrieval-design.md)
-- [Cloud indexing](docs/cloud-indexing.md)
-- [Phase 2 report](docs/phase-2-report.md)
-- [Storage and revision design](docs/storage-design.md)
-- [Phase 3 report](docs/phase-3-report.md)
-- [FastAPI design](docs/api-design.md)
-- [Phase 4 report](docs/phase-4-report.md)
-- [Local runtime composition](docs/local-runtime.md)
-- [Grounded generation and citations](docs/grounded-generation.md)
-- [Phase 5 report](docs/phase-5-report.md)
-- [Local Streamlit demo](docs/streamlit-demo.md)
-- [Phase 6 report](docs/phase-6-report.md)
-- [`platform_eval_v1` evaluation](docs/evaluation.md)
-- [Phase 7 report](docs/phase-7-report.md)
-- [Architecture and trust boundaries](docs/architecture.md)
-- [Local container runtime](docs/container-runtime.md)
-- [Public release checklist](docs/release-checklist.md)
-- [Phase 8 report](docs/phase-8-report.md)
-- [Local corpus and index lifecycle](docs/corpus-lifecycle.md)
-- [Phase 9 report](docs/phase-9-report.md)
-- [Release-candidate validation](docs/release-candidate.md)
-- [Phase 10 report](docs/phase-10-report.md)
-- [Real local acceptance](docs/local-acceptance.md)
+## Documentation
+
 - [Recruiter demo walkthrough](docs/recruiter-demo.md)
-- [Draft v0.1.0 release notes](docs/release-notes-v0.1.0-draft.md)
-- [Phase 11 report](docs/phase-11-report.md)
-- [Phase 12 report](docs/phase-12-report.md)
+- [Container runtime](docs/container-runtime.md)
+- [Local acceptance](docs/local-acceptance.md)
+- [Retrieval design](docs/retrieval-design.md)
+- [Evaluation protocol](docs/evaluation.md)
+- [Publication policy](docs/publication-policy.md)
+- [Notebook migration audit](docs/notebook-migration-audit.md)
+- [Phase 12 verification report](docs/phase-12-report.md)
 
-## Limitations
+## License
 
-This is currently a development foundation, not a deployed or production-ready
-system. Authentication, public hosting, multi-user isolation, distributed
-retrieval, managed storage, scaling, and operational service-level guarantees
-are future work.
-
-Document upload and corpus selection are implemented only for the bounded local
-single-user demo. Jobs run in-process and are not resumable or suitable for
-public/multi-user ingress.
-
-## Licenses
-
-Original project code is licensed under the [MIT License](LICENSE). FinanceBench
-and third-party documents are governed separately; see
+Original project code is available under the [MIT License](LICENSE). Dataset
+and document licensing is described separately in
 [DATA_LICENSE.md](DATA_LICENSE.md).
