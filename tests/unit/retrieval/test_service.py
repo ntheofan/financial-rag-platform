@@ -89,7 +89,7 @@ def test_retrieval_rejects_blank_queries() -> None:
 
 
 def test_build_rejects_empty_corpus() -> None:
-    """Index construction requires at least one validated Phase 1 chunk."""
+    """Index construction requires at least one validated ingestion chunk."""
     config = fake_retrieval_config()
     with pytest.raises(EmptyCorpusError):
         RetrievalService.build(

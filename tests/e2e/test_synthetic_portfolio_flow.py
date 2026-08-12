@@ -1,4 +1,4 @@
-"""Offline HTTP proof of the complete local recruiter flow."""
+"""Offline HTTP proof of the complete synthetic local portfolio flow."""
 
 from datetime import UTC, datetime
 from pathlib import Path

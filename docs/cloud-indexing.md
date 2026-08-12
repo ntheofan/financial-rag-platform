@@ -45,7 +45,7 @@ reranker = BgeM3Reranker(device="cpu", batch_size=4, use_fp16=False)
 ```
 
 Full-corpus BGE-M3 embedding and repeated cross-encoder reranking may be slow and
-memory-intensive on CPU. Phase 2 makes no local throughput claim.
+memory-intensive on CPU. The retrieval implementation makes no local throughput claim.
 
 ## Cloud GPU execution
 
@@ -57,9 +57,9 @@ full corpus run:
 2. Install the project with `.[models]` in an environment whose PyTorch/CUDA
    versions are compatible with the selected GPU.
 3. Load `configs/retrieval/platform_v1.json`.
-4. Recreate Phase 1 chunks from local/private documents.
+4. Recreate ingestion chunks from local/private documents.
 5. Construct `BgeM3EmbeddingProvider(device="cuda", batch_size=<measured size>)`.
-6. Build the retrieval service with the exact Phase 1 chunking fingerprint.
+6. Build the retrieval service with the exact ingestion chunking fingerprint.
 7. Save artifacts beneath an ignored path such as
    `data/processed/retrieval_index/platform_v1/`.
 8. Validate a reload before using the index for retrieval.
@@ -83,9 +83,9 @@ them only through an approved private channel if a later local run needs them.
 ## Index compatibility rule
 
 An embedding model change always requires a new index. The same applies to a
-dimension change, a different normalization method, or a different Phase 1
+dimension change, a different normalization method, or a different ingestion
 chunking fingerprint. The loader raises `ManifestCompatibilityError`; it does
 not coerce, pad, truncate, or silently reuse incompatible vectors.
 
 Full corpus indexing and real reranker execution are explicit manual/cloud work.
-They are not performed by Phase 2 implementation, pytest, pre-commit, or CI.
+They are not performed by the retrieval implementation, pytest, pre-commit, or CI.

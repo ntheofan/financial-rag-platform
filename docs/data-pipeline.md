@@ -1,8 +1,8 @@
-# Phase 1 data pipeline
+# Data pipeline
 
 ## Scope
 
-Phase 1 implements an offline, local pipeline:
+The ingestion layer implements an offline, local pipeline:
 
 ```text
 local .md/.txt/.pdf
@@ -26,7 +26,7 @@ Markdown-aware recursive splitting
 LangChain Document chunks with complete metadata lineage
 ```
 
-The phase ends at in-memory chunks. It does not write a chunk corpus and does
+The pipeline ends at in-memory chunks. It does not write a chunk corpus and does
 not implement embeddings, vector or lexical indexes, retrieval, reranking,
 generation, evaluation execution, an API, or persistence.
 
@@ -114,12 +114,12 @@ document. Page documents are chunked independently, so no chunk crosses a PDF
 page boundary and every PDF chunk retains an unambiguous page number.
 
 The 200-character minimum is retained to avoid silently changing the thesis
-parameter. If it removes every candidate chunk, Phase 1 raises `ChunkingError`
+parameter. If it removes every candidate chunk, the pipeline raises `ChunkingError`
 instead of silently returning an empty result.
 
 ## Differences from `research_legacy_v1`
 
-The 15 thesis notebooks remain unchanged. Phase 1 migrates their useful
+The 15 thesis notebooks remain unchanged locally. The ingestion layer migrates their useful
 parameters and intent, but replaces notebook-only behavior:
 
 - filename stems are replaced by content-derived document IDs;
@@ -135,7 +135,7 @@ parameters and intent, but replaces notebook-only behavior:
 - manifests, CSV/Parquet exports, ZIP creation, display cells, Kaggle branches,
   and hidden directory creation side effects are not part of the library.
 
-The notebook used Docling to create Markdown and structured JSON. This Phase 1
+The notebook used Docling to create Markdown and structured JSON. This pipeline
 scope instead uses the requested small local PyMuPDF text adapter. It does not
 claim Docling-equivalent layout reconstruction, table recognition, or OCR.
 
@@ -149,6 +149,6 @@ claim Docling-equivalent layout reconstruction, table recognition, or OCR.
 - Tables in Markdown/text are preserved as text, but no semantic table model is
   built. PDF tables may lose row/column structure during extraction.
 - Section metadata depends on ATX headings such as `# Heading`; plain PDF text
-  usually has no reliable section label in this phase.
+  usually has no reliable section label in this implementation.
 - Content-derived IDs detect byte changes, not semantic equivalence between two
   differently encoded files.

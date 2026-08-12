@@ -90,7 +90,7 @@ class RetrievalConfig(BaseModel):
 
 
 class ChunkRecord(BaseModel):
-    """Serializable alignment record for one indexed Phase 1 chunk."""
+    """Serializable alignment record for one indexed ingestion chunk."""
 
     model_config = ConfigDict(extra="forbid", frozen=True)
 
@@ -99,7 +99,7 @@ class ChunkRecord(BaseModel):
 
 
 class RetrievedChunk(ChunkMetadata):
-    """Ranked chunk with full Phase 1 lineage and transparent score fields."""
+    """Ranked chunk with full source lineage and transparent score fields."""
 
     content: str = Field(min_length=1)
     rank: int = Field(ge=1)

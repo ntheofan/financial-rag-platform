@@ -1,4 +1,4 @@
-# Phase 11A real local acceptance
+# Real local acceptance
 
 ## Boundary
 

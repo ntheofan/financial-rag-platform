@@ -1,6 +1,6 @@
 # Local container runtime
 
-Phase 8A packages the existing tested services for a local Docker Compose demo.
+The container layer packages the tested services for a local Docker Compose demo.
 It does not add a new retrieval path or change `platform_v1` behavior.
 
 ## Services and images
@@ -15,7 +15,7 @@ It does not add a new retrieval path or change `platform_v1` behavior.
 The database tag is version-pinned from the
 [official pgvector Docker tag list](https://github.com/pgvector/pgvector#docker).
 
-The API receives an ephemeral `/runtime/uploads` tmpfs for Phase 9 staging.
+The API receives an ephemeral `/runtime/uploads` tmpfs for document staging.
 Uploaded files are never image inputs or named-volume contents and are removed
 after the in-process build finishes.
 
@@ -29,7 +29,7 @@ index before resolving FlagEmbedding. The verified image reports
 `torch 2.9.1+cpu`, no CUDA availability, and no installed CUDA/NVIDIA Python
 distributions. Dependency stages precede the full source copy and use BuildKit
 pip cache mounts, so source-only rebuilds retain the heavyweight model layer.
-This Docker path is the supported CPU-only recruiter-demo package; the generic
+This Docker path is the supported CPU-only local demo package; the generic
 local `models` extra is not presented as a cross-platform wheel lock.
 
 ## Start the stack
@@ -57,7 +57,7 @@ Do not paste logs publicly without checking them against
 
 ## Enable retrieval explicitly
 
-Place only a compatible, already-created Phase 2 artifact directory under the
+Place only a compatible, already-created retrieval artifact directory under the
 ignored local `artifacts/` directory. In the ignored `.env`, set:
 
 ```dotenv
@@ -109,7 +109,7 @@ cache volumes. Use it only when that loss is intended.
   `CONTAINER_RETRIEVAL_ARTIFACT_DIRECTORY` is blank. Configure a compatible
   ignored artifact as described above.
 - **Artifact compatibility error:** rebuild the local artifact through the
-  versioned Phase 2 pipeline; do not edit its manifest manually.
+  versioned retrieval pipeline; do not edit its manifest manually.
 - **Model download fails:** verify network access and available disk space for
   the named model cache. The system does not include offline model weights.
 - **Unexpected GPU/CUDA packages:** rebuild the `api-models` target from this

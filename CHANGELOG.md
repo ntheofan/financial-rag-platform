@@ -8,7 +8,7 @@ project uses semantic versioning for public release tags.
 
 ### Added
 
-- Recruiter-facing `v0.1.0` release notes.
+- Portfolio-facing `v0.1.0` release notes.
 - A checked synthetic benchmark aligned with the public ACME demo document.
 - Hosted CI contracts for portable pytest temporary files and explicit Buildx
   setup.
@@ -17,7 +17,7 @@ project uses semantic versioning for public release tags.
 
 - The document view refreshes the visible submitted-job status from the latest
   backend result.
-- Recruiter and README guidance now describe the exact synthetic demo inputs
+- Local demo and README guidance now describe the exact synthetic inputs
   and current verification evidence.
 
 ### Security

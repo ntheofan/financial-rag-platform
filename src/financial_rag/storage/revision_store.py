@@ -254,7 +254,7 @@ class PostgresRevisionStore:
     async def get_corpus(
         self, corpus_revision_id: CorpusRevisionId
     ) -> tuple[CorpusRevision, tuple[ChunkRecord, ...]]:
-        """Load a revision and reconstruct its exact ordered Phase 2 mapping."""
+        """Load a revision and reconstruct its exact ordered retrieval mapping."""
         async with self._session_factory() as session:
             return await self._load_corpus(session, corpus_revision_id)
 
@@ -286,7 +286,7 @@ class PostgresRevisionStore:
         embeddings: ArrayLike,
         manifest: EmbeddingIndexManifest,
     ) -> IndexRevision:
-        """Atomically persist a validated Phase 2 manifest and aligned vectors."""
+        """Atomically persist a validated retrieval manifest and aligned vectors."""
         validated = validate_records(records)
         if manifest.embedding_dimension != EMBEDDING_DIMENSION:
             raise RevisionCompatibilityError(

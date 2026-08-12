@@ -1,4 +1,4 @@
-"""HTTP tests for all reproducible Phase 2 retrieval modes."""
+"""HTTP tests for all reproducible retrieval modes."""
 
 import pytest
 

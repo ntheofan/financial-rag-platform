@@ -1,4 +1,4 @@
-"""Conversion and validation of Phase 1 chunks for retrieval indexes."""
+"""Conversion and validation of ingestion chunks for retrieval indexes."""
 
 from collections.abc import Sequence
 
@@ -13,7 +13,7 @@ from financial_rag.domain.retrieval import ChunkRecord
 def records_from_documents(documents: Sequence[Document]) -> tuple[ChunkRecord, ...]:
     """Validate LangChain chunks and preserve their complete metadata lineage."""
     if not documents:
-        raise EmptyCorpusError("At least one Phase 1 chunk is required for indexing")
+        raise EmptyCorpusError("At least one ingestion chunk is required for indexing")
 
     records: list[ChunkRecord] = []
     for document in documents:

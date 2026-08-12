@@ -12,7 +12,7 @@ not a deployment or production-readiness announcement.
 - Grounded OpenAI generation with validated citations, retrieved chunks, and
   component score traces.
 - PostgreSQL/pgvector corpus and index revisions with SQLAlchemy 2 and Alembic.
-- FastAPI composition and a five-view Streamlit recruiter demo.
+- FastAPI composition and a five-view Streamlit local demo.
 - Paired Hit@K and MRR evaluation through a versioned benchmark contract.
 - Docker Compose packaging, strict typed/tested source gates, publication
   scanning, dependency auditing, and green hosted CI.
@@ -39,8 +39,9 @@ document during automated tests. They are not FinanceBench examples or scores.
 
 ## Verification status
 
-The release-candidate source, container, PostgreSQL/pgvector, real local
+The source, container, PostgreSQL/pgvector, real local
 synthetic workflow, publication boundary, and hosted CI are checked separately.
-The exact local Phase 14 evidence is recorded in `docs/phase-14-report.md`. A
+The release checks are reproducible through the checked scripts and the
+verification commands documented in the README. A
 GitHub Release is created only after hosted CI passes on the exact source
 commit.

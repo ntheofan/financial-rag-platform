@@ -38,7 +38,7 @@ comparison, grounded generation, and evaluation become ready only when a
 compatible ignored artifact is explicitly mounted and configured. Generation
 also requires a local `.env` containing `OPENAI_API_KEY`.
 
-The bounded Phase 9 upload lifecycle is local-only and stages documents outside
+The bounded upload lifecycle is local-only and stages documents outside
 the image before persisting chunks/vectors in the local database. The stack is
 not approved for public deployment. It has no authentication,
 authorization, tenant isolation, quotas, TLS termination, upload lifecycle,

@@ -92,7 +92,7 @@ Get-ChildItem -Recurse -File | Where-Object Length -GT 10MB
 Get-ChildItem notebooks\*.ipynb | Get-FileHash -Algorithm SHA256
 ```
 
-Phase 8 adds a conservative automated first pass:
+The repository includes a conservative automated first pass:
 
 ```powershell
 .\.venv\Scripts\python.exe scripts/check_publication.py
@@ -110,7 +110,7 @@ Do not stage files merely to test whether ignore rules work. Use
 
 ## Operational scope
 
-The first release target is a local, single-user recruiter demo. This policy
+The first release target is a local, single-user portfolio demo. This policy
 does not approve public deployment. Authentication, authorization, quotas,
 managed storage, tenant isolation, retention controls, and operational scaling
 remain future work.

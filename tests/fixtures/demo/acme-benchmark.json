@@ -1,6 +1,6 @@
 {
   "schema_version": "platform_eval_dataset_v1",
-  "dataset_id": "synthetic-acme-recruiter-v1",
+  "dataset_id": "synthetic-acme-demo-v1",
   "items": [
     {
       "query_id": "synthetic-acme-cash-flow",

@@ -25,7 +25,7 @@ class Base(DeclarativeBase):
 
 
 class DocumentRow(Base):
-    """One content-derived Phase 1 source document."""
+    """One content-derived ingestion source document."""
 
     __tablename__ = "documents"
 

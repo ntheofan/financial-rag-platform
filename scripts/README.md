@@ -1,7 +1,7 @@
 # Scripts
 
 Reusable command logic lives in the typed package rather than ad-hoc scripts.
-The Phase 7 retrieval evaluation command is available as:
+The retrieval evaluation command is available as:
 
 ```powershell
 .\.venv\Scripts\python.exe -m financial_rag.cli evaluate-retrieval --help
@@ -36,7 +36,7 @@ The default command fails on source-contract drift. The strict form also fails
 when Docker, a database URL, or the optional model adapter is unavailable; it
 still does not run PostgreSQL, model, Compose, or OpenAI smoke tests by itself.
 
-With the real local Compose stack already running, the Phase 11 acceptance
+With the real local Compose stack already running, the acceptance
 runner uploads only the checked synthetic fixture to a loopback API and prints
 a privacy-minimized result:
 

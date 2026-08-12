@@ -1,17 +1,17 @@
 # FastAPI API design
 
-## Phase 4 foundation through Phase 9 lifecycle
+## API foundation and document lifecycle
 
-Phase 4 is a thin HTTP adapter over the tested Phase 2 retrieval service and
-Phase 3 revision reader. It deliberately does not add generation, prompts,
+The API is a thin HTTP adapter over the tested retrieval service and
+revision reader. It deliberately does not add hidden retrieval chains,
 OpenAI calls, document upload, background jobs, evaluation, Docker, Streamlit,
 authentication, or public deployment.
 
-Phase 5 retains every Phase 4 retrieval and revision contract and adds one
+The grounded-query extension retains every retrieval and revision contract and adds one
 grounded-query route over the tested generation orchestration. The standalone
 retrieval route remains available for controlled mode comparisons.
 
-Phase 9 adds bounded local multipart upload, durable privacy-minimized build
+The document lifecycle adds bounded local multipart upload, durable privacy-minimized build
 status, revision listing, and explicit active-index selection. It does not turn
 the API into a public or multi-user service.
 
@@ -63,13 +63,13 @@ values return HTTP 422.
 
 The routes never construct a model, index, engine, or database session.
 Synchronous retrieval is run in Starlette's thread pool so model or FAISS work
-does not block the event loop. The Phase 3 store implements the revision-reader
+does not block the event loop. The persistence store implements the revision-reader
 port without loading chunk text or embedding vectors for metadata endpoints.
 
 Calling `create_app()` without a container is safe and useful for OpenAPI and
 liveness checks. Query/revision endpoints then fail with HTTP 503. This explicit
 composition boundary prevents import-time network calls, hidden model downloads,
-and accidental database connections. Phase 5's `create_local_app()` owns the
+and accidental database connections. `create_local_app()` owns the
 concrete local services through ASGI lifespan without changing route contracts.
 
 ## Health semantics
@@ -88,7 +88,7 @@ It does not make availability or service-level claims about external infrastruct
 
 The evaluation request accepts at most 500 validated query items. Its response
 contains IDs, fingerprints, statuses, and metrics, but not query, reference-
-answer, generated-answer, or source-chunk text. Phase 7 has no durable evaluation
+answer, generated-answer, or source-chunk text. The evaluation layer has no durable
 job store, so the POST response is the complete synchronous run result.
 
 ## Errors and request correlation

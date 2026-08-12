@@ -1,4 +1,4 @@
-"""Offline tests for the Phase 10 release-candidate source contract."""
+"""Offline tests for the release-candidate source contract."""
 
 import json
 from dataclasses import asdict

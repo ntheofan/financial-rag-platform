@@ -47,27 +47,31 @@ def _git(root: Path, *args: str) -> subprocess.CompletedProcess[bytes]:
 
 
 def verify_notebook_hashes(root: Path, manifest_path: Path) -> RepositoryCheck:
-    """Compare the immutable notebook inventory to the checked-in hash snapshot."""
+    """Compare local notebooks to a private ignored hash snapshot when present."""
+    notebooks = tuple(sorted((root / "notebooks").glob("*.ipynb")))
+    if not notebooks:
+        return RepositoryCheck(
+            "notebook_hashes",
+            "passed",
+            "public clone contains no notebook artifacts",
+        )
     try:
         lines = manifest_path.read_text(encoding="utf-8").splitlines()
     except OSError:
-        return RepositoryCheck("notebook_hashes", "failed", "hash manifest is unreadable")
+        return RepositoryCheck(
+            "notebook_hashes",
+            "failed",
+            "local notebook hash snapshot is missing or unreadable",
+        )
     expected: dict[str, str] = {}
     for line in lines:
         match = HASH_LINE.fullmatch(line)
         if match is None or match["name"] in expected:
             return RepositoryCheck("notebook_hashes", "failed", "hash manifest is invalid")
         expected[match["name"]] = match["digest"]
-    notebooks = tuple(sorted((root / "notebooks").glob("*.ipynb")))
     if len(expected) != 15:
         return RepositoryCheck(
             "notebook_hashes", "failed", "hash manifest does not contain 15 entries"
-        )
-    if not notebooks:
-        return RepositoryCheck(
-            "notebook_hashes",
-            "passed",
-            "public clone contains no notebook artifacts; snapshot was not applied",
         )
     if {path.name for path in notebooks} != set(expected):
         return RepositoryCheck(
@@ -133,7 +137,7 @@ def repository_checks(root: Path) -> tuple[RepositoryCheck, ...]:
         publication,
         verify_notebook_hashes(
             root,
-            root / "configs" / "release" / "notebook_hashes_v1.sha256",
+            root / ".cache" / "notebook_hashes_v1.sha256",
         ),
     )
 

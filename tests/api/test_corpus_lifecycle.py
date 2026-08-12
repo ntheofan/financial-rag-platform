@@ -74,12 +74,12 @@ async def test_multipart_upload_returns_privacy_minimized_pending_job() -> None:
         response = await client.post(
             "/api/v1/corpus-jobs",
             files={"files": ("synthetic.md", b"# Synthetic\nEvidence", "text/markdown")},
-            data={"label": "Recruiter demo"},
+            data={"label": "Local demo"},
         )
 
     assert response.status_code == 202
     assert response.json()["status"] == "pending"
-    assert response.json()["label"] == "Recruiter demo"
+    assert response.json()["label"] == "Local demo"
     assert "filename" not in response.text
     assert service.uploads[0].filename == "synthetic.md"
 

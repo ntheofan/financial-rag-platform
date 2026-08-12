@@ -1,4 +1,4 @@
-"""Validate the checked-in Phase 10 release-candidate source contract."""
+"""Validate the checked-in release-candidate source contract."""
 
 from __future__ import annotations
 

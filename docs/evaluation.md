@@ -62,7 +62,7 @@ correctness, numeric equivalence, semantic entailment, or citation quality.
 
 When answer metrics are not requested, a reference is missing, or generation is
 unavailable, status is `skipped` and metrics are null. Provider/domain failures
-produce `failed` and null metrics. RAGAS/RAGChecker are not part of Phase 7A/7B.
+produce `failed` and null metrics. RAGAS/RAGChecker are not part of this implementation.
 
 ## Provenance and report privacy
 

@@ -1,6 +1,6 @@
 # Local corpus and index lifecycle
 
-Phase 9 connects the previously tested ingestion, chunking, embedding, revision,
+The corpus lifecycle connects the tested ingestion, chunking, embedding, revision,
 retrieval, API, and demo layers into one bounded local workflow.
 
 ```text
@@ -108,7 +108,7 @@ installed:
 ```powershell
 .\.venv\Scripts\python.exe -m financial_rag.cli index-folder `
   --input-directory .\local-documents `
-  --label "Recruiter demo corpus"
+  --label "Local demo corpus"
 ```
 
 The folder command accepts only direct child files and routes them through the
@@ -117,7 +117,7 @@ JSON, not extracted text or model input.
 
 ## Database migration
 
-Phase 9 adds Alembic head `20260812_0002`, which creates only the
+Alembic head `20260812_0002` creates only the
 `corpus_build_jobs` table and its created-time index. Existing revision tables
 and vectors are not rewritten.
 

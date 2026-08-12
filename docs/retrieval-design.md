@@ -2,11 +2,11 @@
 
 ## Scope and comparison routes
 
-Phase 2 consumes the validated in-memory chunks produced by Phase 1 and stops
+The retrieval layer consumes validated in-memory chunks produced by ingestion and stops
 at ranked retrieval output:
 
 ```text
-Phase 1 chunks
+Ingestion chunks
       |
       +--> L2-normalized embeddings --> FAISS IndexFlatIP --+--> V1 dense
       |                                                     |
@@ -38,11 +38,11 @@ x · y = ||x|| ||y|| cos(theta) = cos(theta)
 
 Therefore `IndexFlatIP` inner-product ranking over L2-normalized vectors is the
 same ordering as cosine-similarity ranking. `IndexFlatIP` is exact flat search;
-Phase 2 makes no approximate-index or scaling claim. Equal scores are stabilized
+The retrieval layer makes no approximate-index or scaling claim. Equal scores are stabilized
 by `chunk_id`.
 
 V1 searches the entire FAISS index and returns `final_top_k=10` by default. Each
-result exposes `dense_rank` and `dense_score` plus the complete Phase 1 metadata.
+result exposes `dense_rank` and `dense_score` plus the complete source metadata.
 
 ## Lexical BM25
 
@@ -156,4 +156,4 @@ structured logs.
 These choices make the implementation testable; they do not prove reproduction
 of the historical metrics. Those results remain `research_legacy_v1`. No real
 corpus indexing, full BGE/reranker execution, answers, or new evaluation metrics
-are produced in Phase 2.
+are produced by the retrieval layer.

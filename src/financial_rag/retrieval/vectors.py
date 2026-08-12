@@ -38,7 +38,7 @@ def normalize_query_vector(vector: ArrayLike, *, dimension: int) -> NDArray[np.f
 
 
 def fingerprint_vector_matrix(vectors: ArrayLike, *, dimension: int) -> ConfigurationFingerprint:
-    """Hash normalized float32 rows using the Phase 2 FAISS manifest format."""
+    """Hash normalized float32 rows using the retrieval manifest format."""
     matrix = normalize_l2(vectors, dimension=dimension)
     digest = hashlib.sha256()
     digest.update(f"float32:{matrix.shape[0]}:{dimension}".encode("ascii"))

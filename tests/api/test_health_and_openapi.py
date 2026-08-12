@@ -58,7 +58,7 @@ async def test_invalid_request_id_is_replaced_with_bounded_generated_value() -> 
 
 
 @pytest.mark.asyncio
-async def test_openapi_exposes_phase_5_grounded_query_and_retrieval_routes() -> None:
+async def test_openapi_exposes_grounded_query_and_retrieval_routes() -> None:
     async with api_client(create_app(container=configured_container())) as client:
         schema = (await client.get("/openapi.json")).json()
 

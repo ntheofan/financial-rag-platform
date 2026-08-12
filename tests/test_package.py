@@ -1,4 +1,4 @@
-"""Phase 0 package smoke tests with no external services or API calls."""
+"""Package smoke tests with no external services or API calls."""
 
 from importlib import import_module
 

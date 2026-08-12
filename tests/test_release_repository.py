@@ -37,11 +37,19 @@ def test_notebook_hash_snapshot_rejects_content_change(tmp_path: Path) -> None:
 
 
 def test_notebook_hash_snapshot_allows_public_clone_without_artifacts(tmp_path: Path) -> None:
-    manifest = _write_snapshot(tmp_path)
-    for notebook in (tmp_path / "notebooks").glob("*.ipynb"):
-        notebook.unlink()
-
-    result = verify_notebook_hashes(tmp_path, manifest)
+    result = verify_notebook_hashes(tmp_path, tmp_path / "missing-private-snapshot.sha256")
 
     assert result.state == "passed"
     assert result.detail.startswith("public clone")
+
+
+def test_notebook_hash_snapshot_is_required_when_local_notebooks_exist(
+    tmp_path: Path,
+) -> None:
+    manifest = _write_snapshot(tmp_path)
+    manifest.unlink()
+
+    result = verify_notebook_hashes(tmp_path, manifest)
+
+    assert result.state == "failed"
+    assert result.detail == "local notebook hash snapshot is missing or unreadable"

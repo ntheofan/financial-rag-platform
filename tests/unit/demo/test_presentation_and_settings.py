@@ -62,7 +62,7 @@ def test_job_refresh_replaces_only_the_matching_submitted_snapshot() -> None:
     assert refresh_submitted_job(None, (completed,)) is None
 
 
-def test_recruiter_benchmark_ids_match_the_checked_synthetic_document() -> None:
+def test_demo_benchmark_ids_match_the_checked_synthetic_document() -> None:
     document_path = PROJECT_ROOT / "tests" / "fixtures" / "demo" / "acme-2025-10k.md"
     benchmark_path = PROJECT_ROOT / "tests" / "fixtures" / "demo" / "acme-benchmark.json"
     chunks = MarkdownChunker().chunk_documents(TextMarkdownLoader().load(document_path))

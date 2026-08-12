@@ -1,4 +1,4 @@
-"""Recruiter-friendly local UI that communicates only with the FastAPI backend."""
+"""Local portfolio UI that communicates only with the FastAPI backend."""
 
 import streamlit as st
 

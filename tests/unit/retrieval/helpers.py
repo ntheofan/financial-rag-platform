@@ -1,4 +1,4 @@
-"""Synthetic Phase 1 chunks and platform_v1 test configuration."""
+"""Synthetic ingestion chunks and platform_v1 test configuration."""
 
 from datetime import date
 from pathlib import Path

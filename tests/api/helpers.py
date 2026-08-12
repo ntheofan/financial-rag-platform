@@ -18,7 +18,7 @@ FINGERPRINT = ConfigurationFingerprint(value="c" * 64)
 
 
 def retrieval_service() -> RetrievalService:
-    """Build the real Phase 2 orchestration around deterministic fake providers."""
+    """Build the real retrieval orchestration around deterministic fake providers."""
     config = fake_retrieval_config(final_top_k=2)
     return RetrievalService.build(
         synthetic_chunks(
@@ -76,7 +76,7 @@ class FakeRevisionReader:
 
 
 def configured_container() -> ApiContainer:
-    """Provide every Phase 4 API capability without external infrastructure."""
+    """Provide every API capability without external infrastructure."""
     retrieval = retrieval_service()
     return ApiContainer(
         retrieval=retrieval,

@@ -76,7 +76,7 @@ class RetrievalService:
         reranker: Reranker | None = None,
         embedding_batch_size: int | None = None,
     ) -> "RetrievalService":
-        """Build aligned dense and lexical indexes from validated Phase 1 chunks."""
+        """Build aligned dense and lexical indexes from validated ingestion chunks."""
         cls._validate_provider(embedding_provider, config)
         records = records_from_documents(chunks)
         dense_index = DenseIndex.build(

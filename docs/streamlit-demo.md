@@ -1,13 +1,13 @@
 # Local Streamlit demo
 
-## Phase 6 foundation and Phase 9 lifecycle
+## Local UI and document lifecycle
 
 The Streamlit application is a thin local client for the existing FastAPI
 contracts. It does not import or connect directly to PostgreSQL, FAISS,
 FlagEmbedding, or OpenAI. It receives no model-provider key and keeps no durable
 copy of queries, answers, contexts, or document text.
 
-The `Documents` tab now uses the Phase 9 FastAPI lifecycle for bounded local
+The `Documents` tab uses the FastAPI lifecycle for bounded local
 upload, build-job status, revision listing, and active-index selection. It does
 not read or write staging/database/model state directly.
 
@@ -55,7 +55,7 @@ Copy-Item .env.example .env
 ```
 
 Configure only the ignored `.env`. Existing artifacts may still be supplied
-with `RETRIEVAL_ARTIFACT_DIRECTORY`. Phase 9 upload/indexing instead requires
+with `RETRIEVAL_ARTIFACT_DIRECTORY`. Document upload/indexing instead requires
 `DATABASE_ENABLED=true`, a migrated database, and the optional model extra. Set
 `OPENAI_API_KEY` only when grounded answers should be available. The Streamlit
 client uses only:

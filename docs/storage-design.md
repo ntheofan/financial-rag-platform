@@ -1,8 +1,8 @@
 # PostgreSQL, pgvector, and revision storage
 
-## Phase 3 boundary
+## Persistence boundary
 
-Phase 3 adds durable storage beneath the Phase 1 and Phase 2 contracts. It does
+The persistence layer adds durable storage beneath the ingestion and retrieval contracts. It does
 not expose an API, run ingestion jobs, download models, query OpenAI, generate
 answers, execute FinanceBench, or replace the current FAISS/BM25 comparison
 routes with database retrieval.
@@ -27,12 +27,12 @@ index_revisions *--------------------------------------+
 corpus_build_jobs --- optional completed corpus/index revision references
 ```
 
-- `documents` stores portable Phase 1 source metadata. It never stores an
+- `documents` stores portable ingestion source metadata. It never stores an
   absolute local path or a source PDF.
 - `chunks` stores exact chunk content and complete page/section lineage.
 - `corpus_revisions` identifies a chunking configuration plus an exact ordered
   chunk mapping. Membership tables preserve document membership and row order.
-- `index_revisions` identifies one embedding model/configuration and its Phase 2
+- `index_revisions` identifies one embedding model/configuration and its retrieval
   compatibility fingerprints.
 - `chunk_embeddings` stores one `vector(1024)` per ordered chunk. Composite
   foreign keys ensure that a vector cannot point to a chunk outside its corpus
@@ -49,7 +49,7 @@ is public. Database files, dumps, volumes, logs, and credentials remain ignored.
 Corpus revision IDs are deterministic hashes over the ordered `ChunkRecord`
 payload and chunking-configuration fingerprint. Index revision IDs are
 deterministic hashes over the corpus revision ID and the timestamp-independent
-Phase 2 manifest identity.
+retrieval manifest identity.
 
 The current single-user store writes a complete revision transactionally and
 publishes it directly as `ready`. Repeating the exact operation is idempotent.
@@ -59,7 +59,7 @@ chunking, chunk order, model, dimensions, normalization, retrieval configuration
 or vector content produces a new logical revision.
 
 The schema reserves `failed` and `archived` states for future background-job and
-retention workflows. Phase 3 does not yet expose those state transitions and
+retention workflows. The persistence layer does not expose those state transitions and
 does not delete revisions.
 
 Before writing an index, the store validates:
@@ -115,7 +115,7 @@ $env:TEST_DATABASE_URL = "postgresql+asyncpg://..."
   embedding dimension requires a reviewed schema migration and new revisions.
 - No HNSW/IVFFlat index is claimed. Adding approximate pgvector search would
   require a separate, reproducible comparison against exact `IndexFlatIP`.
-- Phase 9 can hydrate exact FAISS/BM25/reranker services from one explicitly
+- The corpus lifecycle can hydrate exact FAISS/BM25/reranker services from one explicitly
   selected persisted pgvector revision. SQL-native pgvector retrieval and
   approximate indexes remain future work.
 - Multi-user isolation, authorization, backups, encryption policy, retention,

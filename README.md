@@ -169,16 +169,12 @@ separately from the MIT-licensed project code. See
 
 ## Documentation
 
-- [Recruiter demo walkthrough](docs/recruiter-demo.md)
 - [Container runtime](docs/container-runtime.md)
 - [Local acceptance](docs/local-acceptance.md)
 - [Retrieval design](docs/retrieval-design.md)
 - [Evaluation protocol](docs/evaluation.md)
 - [Publication policy](docs/publication-policy.md)
-- [Notebook migration audit](docs/notebook-migration-audit.md)
 - [v0.1.0 release notes](docs/release-notes-v0.1.0.md)
-- [Phase 14 release-candidate report](docs/phase-14-report.md)
-- [Phase 13 hosted CI report](docs/phase-13-report.md)
 - [Changelog](CHANGELOG.md)
 
 ## License

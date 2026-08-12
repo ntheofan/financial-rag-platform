@@ -45,7 +45,7 @@ actually supplied in this request's top-five context, and that every
 non-abstained answer has at least one such citation. It does not prove that each
 natural-language claim is entailed by the cited text. Claim-level entailment,
 quote-span verification, and answer-quality evaluation remain later work, so
-this phase makes no correctness or benchmark claim.
+this implementation makes no correctness or benchmark claim.
 
 Automated tests inject fake generation clients and never make a live OpenAI
 request. A real request occurs only when a local operator explicitly configures
