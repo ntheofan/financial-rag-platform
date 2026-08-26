@@ -39,7 +39,7 @@ models = [
   "FlagEmbedding>=1.4,<2",
   # Avoid eager sentence-transformers 3+/5 imports breaking side-effect-free
   # FastAPI startup when the optional model stack is installed.
-  "sentence-transformers>=2.7,<3",
+  "sentence-transformers>=2.7,<7",
   # The model-enabled Docker target installs this exact release from the
   # official PyTorch CPU wheel index before resolving the remaining extra.
   "torch==2.9.1",
