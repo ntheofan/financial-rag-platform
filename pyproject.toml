@@ -42,7 +42,7 @@ models = [
   "sentence-transformers>=2.7,<3",
   # The model-enabled Docker target installs this exact release from the
   # official PyTorch CPU wheel index before resolving the remaining extra.
-  "torch==2.9.1",
+  "torch==2.15.0",
 ]
 api = [
   "uvicorn[standard]>=0.34,<1",
